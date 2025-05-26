@@ -1,5 +1,7 @@
 package com.example.serlinkstock.model
 
+import java.io.Serializable
+
 data class CombinedItem(
     var stockCode: String,
     var stockName: String? = null,
@@ -15,4 +17,8 @@ data class CombinedItem(
     var peRatio: String? = null,
     var dividendYield: String? = null,
     var pbRatio: String? = null
-)
+) : Serializable {
+    companion object {
+        const val NAME = "CombinedItem"
+    }
+}

@@ -8,15 +8,22 @@ import com.example.serlinkstock.model.BWIBBUAllResponse
 import com.example.serlinkstock.model.CombinedItem
 import com.example.serlinkstock.model.StockDayAllResponse
 import com.example.serlinkstock.model.StockDayAvgAllResponse
-import com.example.serlinkstock.network.StockApiService
+import com.example.serlinkstock.network.ApiService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class StockViewModel(private val stockApiService: StockApiService) : ViewModel() {
+class StockViewModel(private val apiService: ApiService) : ViewModel() {
 
     private val _combinedItemList = MutableLiveData<List<CombinedItem>>()
     val combinedItemList: LiveData<List<CombinedItem>> = _combinedItemList
+
+    private val _sortAscending = MutableLiveData<Boolean>(false)
+    val sortAscending: LiveData<Boolean> = _sortAscending
+
+    fun setSortAscending(ascending: Boolean) {
+        _sortAscending.value = ascending
+    }
 
     init {
         fetchAndCombineStockData()
@@ -24,14 +31,17 @@ class StockViewModel(private val stockApiService: StockApiService) : ViewModel()
 
     private fun fetchAndCombineStockData() {
         viewModelScope.launch {
-            val stockDayAllDeferred = async { stockApiService.getStockDayAll() }
-            val stockDayAvgAllDeferred = async { stockApiService.getStockDayAvgAll() }
-            val bwibbuAllDeferred = async { stockApiService.getBWIBBUAll() }
+            val stockDayAllDeferred = async { apiService.getStockDayAll() }
+            val stockDayAvgAllDeferred = async { apiService.getStockDayAvgAll() }
+            val bwibbuAllDeferred = async { apiService.getBWIBBUAll() }
 
             val results = awaitAll(stockDayAllDeferred, stockDayAvgAllDeferred, bwibbuAllDeferred)
 
+            @Suppress("UNCHECKED_CAST")
             val stockDayAllList = results[0] as? List<StockDayAllResponse> ?: emptyList()
+            @Suppress("UNCHECKED_CAST")
             val stockDayAvgAllList = results[1] as? List<StockDayAvgAllResponse> ?: emptyList()
+            @Suppress("UNCHECKED_CAST")
             val bwibbuAllList = results[2] as? List<BWIBBUAllResponse> ?: emptyList()
 
             val combinedMap = mutableMapOf<String, CombinedItem>()
@@ -73,7 +83,7 @@ class StockViewModel(private val stockApiService: StockApiService) : ViewModel()
                 }
             }
 
-            _combinedItemList.value = combinedMap.values.toList().sortedBy { it.stockCode }
+            _combinedItemList.value = combinedMap.values.toList().sortedByDescending { it.stockCode }
         }
     }
 }

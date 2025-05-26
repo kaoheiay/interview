@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- New Text Size -->
+    <dimen name="SIZE_HEADING_1">28sp</dimen>
+    <dimen name="SIZE_HEADING_2">24sp</dimen>
+    <dimen name="SIZE_HEADING_3">20sp</dimen>
+
+    <dimen name="SIZE_BODY_1">16sp</dimen>
+    <dimen name="SIZE_BODY_2">14sp</dimen>
+    <dimen name="SIZE_CAP_1">12sp</dimen>
+    <dimen name="SIZE_CAP_2">10sp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_4">4dp</dimen>
+</resources>

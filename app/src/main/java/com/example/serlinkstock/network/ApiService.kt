@@ -5,7 +5,7 @@ import com.example.serlinkstock.model.StockDayAllResponse
 import com.example.serlinkstock.model.StockDayAvgAllResponse
 import retrofit2.http.GET
 
-interface StockApiService {
+interface ApiService {
     @GET("/v1/exchangeReport/STOCK_DAY_ALL")
     suspend fun getStockDayAll(): List<StockDayAllResponse>
 
